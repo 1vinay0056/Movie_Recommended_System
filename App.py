@@ -22,7 +22,7 @@ st.markdown("""
 
 .block-container{
     max-width:1600px;
-    padding-top:2rem;
+    padding-top:1rem;
 }
 
 section[data-testid="stSidebar"]{
