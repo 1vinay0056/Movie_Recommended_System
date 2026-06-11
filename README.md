@@ -115,9 +115,8 @@ Suggests movies based on shared genres and movie categories.
   
  ## 🚀 Live Demo
 
-- 🌐 Frontend: (https://your-streamlit-app.streamlit.app)
-- ⚡ Backend API: (https://your-render-app.onrender.com)
-- 📚 API Docs: (https://your-render-app.onrender.com/docs)
+- 🌐 Frontend: https://movierecommendedsystem-fvtgac79psdayqxljg4gk6.streamlit.app/
+- ⚡ Backend API: https://movie-recommended-system-h45h.onrender.com
 
 ## 👨‍💻 Author
 
