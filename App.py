@@ -283,15 +283,11 @@ def parse_tmdb_search_to_cards(data, keyword: str, limit: int = 24):
 # =============================
 
 st.markdown("""
-<h1 style='font-size:55px;
-color:white;
-margin-bottom:0px;'>
+<h1 style='font-size:55px;color:white;margin-bottom:0px;line-height:1;'>
 🎬 FilmFlow
 </h1>
 
-<p style='color:#9ca3af;
-font-size:18px;
-margin-top:0px;'>
+<p style='color:#9ca3af;font-size:18px;margin-top:0px;margin-bottom:5px;'>
 Discover Trending Movies & Personalized Recommendations
 </p>
 """, unsafe_allow_html=True)
