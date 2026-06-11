@@ -287,7 +287,7 @@ st.markdown("""
 🎬 FilmFlow
 </h1>
 
-<p style='color:#9ca3af;font-size:18px;margin-top:0px;margin-bottom:5px;'>
+<p style='color:#9ca3af;font-size:18px;margin-top:0px;margin-bottom:3px;'>
 Discover Trending Movies & Personalized Recommendations
 </p>
 """, unsafe_allow_html=True)
