@@ -7,22 +7,83 @@ import streamlit as st
 API_BASE = "https://movie-recommended-system-h45h.onrender.com" or "http://127.0.0.1:8000"
 TMDB_IMG = "https://image.tmdb.org/t/p/w500"
 
-st.set_page_config(page_title="Movie Recommender", page_icon="🎬", layout="wide")
+st.set_page_config(page_title="FilmFlow", page_icon="🎬", layout="wide")
 
 # =============================
 # STYLES (minimal modern)
 # =============================
-st.markdown(
-    """
+st.markdown("""
 <style>
-.block-container { padding-top: 1rem; padding-bottom: 2rem; max-width: 1400px; }
-.small-muted { color:#6b7280; font-size: 0.92rem; }
-.movie-title { font-size: 0.9rem; line-height: 1.15rem; height: 2.3rem; overflow: hidden; }
-.card { border: 1px solid rgba(0,0,0,0.08); border-radius: 16px; padding: 14px; background: rgba(255,255,255,0.7); }
+
+.stApp{
+    background:#0b1020;
+    color:white;
+}
+
+.block-container{
+    max-width:1600px;
+    padding-top:0rem;
+}
+
+section[data-testid="stSidebar"]{
+    background:#111827;
+}
+
+h1,h2,h3,h4{
+    color:white !important;
+}
+
+.small-muted{
+    color:#9ca3af;
+}
+
+.movie-title{
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    text-align:center;
+    padding-top:8px;
+}
+
+.stButton button{
+    width:100%;
+    border-radius:12px;
+    background:#111827;
+    color:white;
+    border:1px solid rgba(255,255,255,.15);
+    font-weight:600;
+    transition:all .3s ease;
+}
+
+.stButton button:hover{
+    background:#E50914;
+    border-color:#E50914;
+    transform:translateY(-2px);
+}
+
+img{
+    border-radius:18px;
+    transition:all .3s ease;
+}
+
+img:hover{
+    transform:scale(1.05);
+    box-shadow:0px 10px 30px rgba(229,9,20,.4);
+}
+
+img:hover{
+    transform:scale(1.05);
+    box-shadow:0px 10px 30px rgba(229,9,20,.4);
+}
+
+.card{
+    background:#111827;
+    border-radius:20px;
+    padding:20px;
+}
+
 </style>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 # =============================
 # STATE + ROUTING (single-file pages)
@@ -201,41 +262,88 @@ def parse_tmdb_search_to_cards(data, keyword: str, limit: int = 24):
 # =============================
 # SIDEBAR (clean)
 # =============================
-with st.sidebar:
-    st.markdown("## 🎬 Menu")
-    if st.button("🏠 Home"):
-        goto_home()
+##   st.markdown("## 🎬 Menu")
+  #  if st.button("🏠 Home"):
+#        goto_home()
 
-    st.markdown("---")
-    st.markdown("### 🏠 Home Feed (only home)")
-    home_category = st.selectbox(
-        "Category",
-        ["trending", "popular", "top_rated", "now_playing", "upcoming"],
-        index=0,
-    )
-    grid_cols = st.slider("Grid columns", 4, 8, 6)
+ #   st.markdown("---")
+ #   st.markdown("### 🏠 Home Feed (only home)")
+  # home_category = st.selectbox(
+   #     "Category",
+   #     ["trending", "popular", "top_rated", "now_playing", "upcoming"],
+   #     index=0,
+   # )
+   # grid_cols = st.slider("Grid columns", 4, 8, 6)
 
 # =============================
 # HEADER
 # =============================
-st.title("🎬 Movie Recommender")
-st.markdown(
-    "<div class='small-muted'>Type keyword → dropdown suggestions + matching results → open → details + recommendations</div>",
-    unsafe_allow_html=True,
-)
-st.divider()
+# =============================
+# HEADER
+# =============================
 
+st.markdown("""
+<h1 style='font-size:55px;
+color:white;
+margin-bottom:0px;'>
+🎬 FilmFlow
+</h1>
+
+<p style='color:#9ca3af;
+font-size:18px;
+margin-top:0px;'>
+Discover Trending Movies & Personalized Recommendations
+</p>
+""", unsafe_allow_html=True)
+
+st.divider()
 # ==========================================================
 # VIEW: HOME
 # ==========================================================
-if st.session_state.view == "home":
-    typed = st.text_input(
-        "Search by movie title (keyword)", placeholder="Type: avenger, batman, love..."
-    )
+if "home_category" not in st.session_state:
+    st.session_state.home_category = "trending"
+    
+if "home_category" not in st.session_state:
+    st.session_state.home_category = "trending"
 
-    st.divider()
+col1,col2,col3,col4,col5 = st.columns(5)
+
+with col1:
+    if st.button("🏠 Home"):
+        st.session_state.home_category = "trending"
+        st.rerun()
+
+with col2:
+    if st.button("🔥 Trending"):
+        st.session_state.home_category = "trending"
+        st.rerun()
+
+with col3:
+    if st.button("⭐ Top Rated"):
+        st.session_state.home_category = "top_rated"
+        st.rerun()
+
+with col4:
+    if st.button("🎬 Popular"):
+        st.session_state.home_category = "popular"
+        st.rerun()
+
+with col5:
+    if st.button("🚀 Upcoming"):
+        st.session_state.home_category = "upcoming"
+        st.rerun()
+
+home_category = st.session_state.home_category
+
+home_category = st.session_state.home_category
 
     # SEARCH MODE (Autocomplete + word-match results)
+if st.session_state.view == "home":
+    typed = st.text_input(
+        "🔍 Search Movies",
+        placeholder="Search Avengers, Batman, Interstellar..."
+        
+    )
     if typed.strip():
         if len(typed.strip()) < 2:
             st.caption("Type at least 2 characters for suggestions.")
@@ -261,10 +369,11 @@ if st.session_state.view == "home":
                 else:
                     st.info("No suggestions found. Try another keyword.")
 
-                st.markdown("### Results")
-                poster_grid(cards, cols=grid_cols, key_prefix="search_results")
+                st.markdown("## 🍿 Search Results")
+                poster_grid(cards, cols=6, key_prefix="search_results")
 
         st.stop()
+        st.write("Current Category:", home_category)
 
     # HOME FEED MODE
     st.markdown(f"### 🏠 Home — {home_category.replace('_',' ').title()}")
@@ -276,7 +385,7 @@ if st.session_state.view == "home":
         st.error(f"Home feed failed: {err or 'Unknown error'}")
         st.stop()
 
-    poster_grid(home_cards, cols=grid_cols, key_prefix="home_feed")
+    poster_grid(home_cards, cols=6, key_prefix="home_feed")
 
 # ==========================================================
 # VIEW: DETAILS
@@ -335,7 +444,7 @@ elif st.session_state.view == "details":
         st.image(data["backdrop_url"], width="stretch")
 
     st.divider()
-    st.markdown("### ✅ Recommendations")
+    st.markdown("## 🎯 Recommended For You")
 
     # Recommendations (TF-IDF + Genre) via your bundle endpoint
     title = (data.get("title") or "").strip()
@@ -346,17 +455,17 @@ elif st.session_state.view == "details":
         )
 
         if not err2 and bundle:
-            st.markdown("#### 🔎 Similar Movies (TF-IDF)")
+            st.markdown("### 🍿 Similar Movies")
             poster_grid(
                 to_cards_from_tfidf_items(bundle.get("tfidf_recommendations")),
-                cols=grid_cols,
+                cols=6,
                 key_prefix="details_tfidf",
             )
 
             st.markdown("#### 🎭 More Like This (Genre)")
             poster_grid(
                 bundle.get("genre_recommendations", []),
-                cols=grid_cols,
+                cols=6,
 
                 key_prefix="details_genre",
             )
@@ -367,7 +476,7 @@ elif st.session_state.view == "details":
             )
             if not err3 and genre_only:
                 poster_grid(
-                    genre_only, cols=grid_cols, key_prefix="details_genre_fallback"
+                    genre_only, cols=6, key_prefix="details_genre_fallback"
                 )
             else:
                 st.warning("No recommendations available right now.")
